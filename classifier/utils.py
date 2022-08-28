@@ -34,7 +34,7 @@ __all__ = (
     "get_image_paths_and_labels",
     "show_images",
     "save_config",
-    "show_np_array"
+    "show_np_array",
 )
 
 

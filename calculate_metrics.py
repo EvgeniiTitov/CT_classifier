@@ -82,7 +82,7 @@ def main():
         model_weights_path=MODEL_WEIGHTS,
         model_classes=["0", "1"],
         preprocessing_pipeline=preprocessing,
-        inference_device="GPU"
+        inference_device="GPU",
     )
 
     logger.info("Calculating the metrics")
@@ -96,7 +96,7 @@ def main():
         actual_result = model.predict_batch([image])[0]
 
         # I hate windows with its endless problems (\\ vs \ vs /)
-        case_id = path[17: 31]
+        case_id = path[17:31]
         slice_id = path[32:]
         key = f"{case_id}-{slice_id}"
 
@@ -120,5 +120,5 @@ def main():
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

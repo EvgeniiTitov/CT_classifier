@@ -22,13 +22,12 @@ class BaseTrainedModel(abc.ABC):
 
 
 class TrainedBrainClassificationModel(BaseTrainedModel):
-
     def __init__(
         self,
         model_weights_path: str,
         model_classes: list[str],
         preprocessing_pipeline: torchvision.transforms.Compose,
-        inference_device: t.Literal["CPU", "GPU"] = "CPU"
+        inference_device: t.Literal["CPU", "GPU"] = "CPU",
     ) -> None:
         self._model = self._load_model(model_weights_path)
 
@@ -55,9 +54,7 @@ class TrainedBrainClassificationModel(BaseTrainedModel):
             preprocessed_image = self._preprocessing_pipeline(
                 Image.fromarray(image)
             )
-            preprocessed_batch.append(
-                torch.unsqueeze(preprocessed_image, 0)
-            )
+            preprocessed_batch.append(torch.unsqueeze(preprocessed_image, 0))
         torch_batch = torch.cat(preprocessed_batch)
 
         try:

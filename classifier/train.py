@@ -17,7 +17,7 @@ from classifier.utils import (
     visualise_training_results,
     create_new_run_folder,
     save_validation_image_paths,
-    save_config
+    save_config,
 )
 from classifier.logger import get_logger
 from classifier.config import Config
