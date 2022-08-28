@@ -1,9 +1,3 @@
-TODO: 
-
-- Calculate sensitivity and specificity
-
----
-
 #### Given:
 
 - CT scans with approach 30 slices each
