@@ -8,6 +8,13 @@ from classifier.logger import get_logger
 from classifier.config import Config
 
 
+"""
+This bit is unnecessary and could be ignored.
+I wanted to follow the ImageFolder format with the dataset but Torch doesn't
+support the .dcm format
+"""
+
+
 __all__ = ["DatasetLoader"]
 
 
