@@ -43,7 +43,7 @@ def visualise_training_results(
     acc_history: list[float],
     loss_history: list[float],
     run_folder: str,
-    show_plot: bool = False
+    show_plot: bool = False,
 ) -> None:
     plt.subplot(1, 2, 1)
     plt.ylabel("Accuracy")
