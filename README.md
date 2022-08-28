@@ -1,27 +1,45 @@
-Given:
+TODO: 
 
-- 227 CT scans, each scan has 30 slices
-- annotations.csv with slice-level annotations
+- Calculate sensitivity and specificity
+- Write inference for model (use valid images)
 
-```
-slice_id,    case_id,       ANY,IPH,IVH,SAH,SDH
-ID_c821d342b,CID_2de9ccc9d2,0,  0,  0,  0,  0
-```
+---
 
-ANY column: 1 means slice contains haemorrgage, 0 means doesn't
+#### Given:
+
+- CT scans with approach 30 slices each
+- CSV file with slice-level annotations
+
+'ANY' column: 1 means slice contains haemorrgage, 0 means doesn't
 
 IPH,IVH,SAH,SDH: four subtypes of haemorrhages. Could have multiple at the same time
+
+---
 
 #### Evaluation:
 
 Sensitivity and specificity (exists or not in the brain), 1 or 0. Subtypes do not
-matter as of now.
+matter for now. If they did, multiclass classification? One scan could have multiple classes tho
 
+---
 
 #### Thoughts:
 
-Data is given in a format I am not used to working, a bunch of nested folders. How
-could I move it?
+- Image Folder format didn't quite work, PyTorch doesn't support the extension
+(should have checked first haha)
 
-ImageFolder approach didn't work out haha, pytorch doesn't support .dcm. Will need to
-create a custom DataSet object
+- Wrote custom data loader + all related code
+
+- Started experimenting. Things to play with off the top of my head:
+
+    - SOTA model / custom
+    - Pretrained SOTA / not pretrained 
+    - Fine tuning SOTA or just training the head
+    - Augmentation (which one?) / no augmentation
+    - Balancing classes (imbalanced dataset) / can't be bothered
+    - Batch size (14 images loads my gpu only ~ 40% - 24 GB VRAM)
+    - LR
+    - Optimizer
+    - Loss function (i doubt there're many options though)
+    - Epochs
+    - 

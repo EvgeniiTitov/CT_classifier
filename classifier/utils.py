@@ -17,6 +17,8 @@ from classifier.config import Config
 
 
 __all__ = (
+    "save_validation_image_paths",
+    "create_new_run_folder",
     "visualise_training_results",
     "save_model",
     "get_training_device",
@@ -38,7 +40,10 @@ logger = get_logger("utils")
 
 
 def visualise_training_results(
-    acc_history: t.Sequence[float], loss_history: t.Sequence[float]
+    acc_history: list[float],
+    loss_history: list[float],
+    run_folder: str,
+    show_plot: bool = False
 ) -> None:
     plt.subplot(1, 2, 1)
     plt.ylabel("Accuracy")
@@ -50,15 +55,32 @@ def visualise_training_results(
     plt.xlabel("Epoch")
     plt.plot(loss_history, linewidth=3)
 
-    plt.show()
+    if show_plot:
+        plt.show()
+    plt.savefig(os.path.join(run_folder, "plot.png"))
+    logger.info(f"Training graph saved to {run_folder}")
 
 
-def save_model(model, model_name: str = "model_weights.pth") -> None:
-    run_folder = _create_new_run_folder()
+def save_validation_image_paths(
+    valid_paths: list[str], run_folder: str, filename: str = "valid_paths.txt"
+) -> None:
+    if not os.path.exists(run_folder):
+        raise FileNotFoundError(f"Run folder {run_folder} does not exist")
+    filepath = os.path.join(run_folder, filename)
+    with open(filepath, "w") as file:
+        for valid_image_path in valid_paths:
+            file.write(valid_image_path + "\n")
+    logger.info(f"Validation image paths saved to {run_folder}")
+
+
+def save_model(model, model_name: str, run_folder: str) -> None:
+    if not os.path.exists(run_folder):
+        raise FileNotFoundError(f"Run folder {run_folder} does not exist")
     torch.save(model, os.path.join(run_folder, model_name))
+    logger.info(f"Model saved to {run_folder}")
 
 
-def _create_new_run_folder(root: str = "../runs") -> str:
+def create_new_run_folder(root: str = "../runs") -> str:
     current_runs = os.listdir(root)
     if not len(current_runs):
         run_folder_path = os.path.join(root, "run1")
@@ -339,13 +361,15 @@ if __name__ == "__main__":
 
     # print(_create_new_run_folder())
 
-    image = open_dcm_file("../data/training/CID_0081375920/ID_1938ae4a7.dcm")
-    print(image.shape)
+    # image = open_dcm_file("../data/training/CID_0081375920/ID_1938ae4a7.dcm")
+    # print(image.shape)
+    #
+    # cv2.imshow("", image)
+    # cv2.waitKey(0)
+    #
+    # from torchvision.transforms.functional import to_pil_image
+    #
+    # pil_image = to_pil_image(image)
+    # print("Done")
 
-    cv2.imshow("", image)
-    cv2.waitKey(0)
-
-    from torchvision.transforms.functional import to_pil_image
-
-    pil_image = to_pil_image(image)
-    print("Done")
+    print(get_training_device())

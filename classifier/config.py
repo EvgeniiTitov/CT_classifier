@@ -1,9 +1,7 @@
 class Config:
     # LOGGER
     LOGGER_VERBOSE = True
-    LOGGER_FORMAT = (
-        "%(asctime)s %(name)s %(levelname)s %(lineno)s: %(message)s"
-    )
+    LOGGER_FORMAT = "%(name)s %(lineno)s: %(message)s"
 
     # TRAINING
     ROTATION_DEGREES = 45
@@ -20,6 +18,6 @@ class Config:
     BETAS = (0.9, 0.999)
     MOMENTUM = 0.9
     SCHEDULER = True
-    SCHEDULER_STEP = 5
+    SCHEDULER_STEP = 4
     SCHEDULER_GAMMA = 0.1
-    EPOCHS = 1
+    EPOCHS = 10

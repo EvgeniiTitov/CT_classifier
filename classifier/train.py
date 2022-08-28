@@ -15,6 +15,8 @@ from classifier.utils import (
     get_training_device,
     save_model,
     visualise_training_results,
+    create_new_run_folder,
+    save_validation_image_paths
 )
 from classifier.logger import get_logger
 from classifier.config import Config
@@ -26,6 +28,11 @@ logger = get_logger("training")
 
 
 def main():
+    run_folder_path = create_new_run_folder()
+    logger.info(
+        f"New run folder created. Results could be found in {run_folder_path}"
+    )
+
     image_paths, labels = get_image_paths_and_labels()
     logger.info(f"Got {len(image_paths)} images and {len(labels)} labels")
 
@@ -49,6 +56,7 @@ def main():
         f"Training images {len(train_images)}; "
         f"Valid images: {len(valid_images)}"
     )
+    save_validation_image_paths(valid_images, run_folder_path)
 
     image_transforms = get_transformations(Config.AUG_REQUIRED)
     logger.info(
@@ -186,10 +194,10 @@ def main():
     model.load_state_dict(best_model_weights)
     logger.info("Loaded best model weights")
 
-    save_model(model)
-    logger.info("Saved model")
-
-    visualise_training_results(val_accuracy_history, val_loss_history)
+    save_model(model, model_name="weights.pth", run_folder=run_folder_path)
+    visualise_training_results(
+        val_accuracy_history, val_loss_history, run_folder_path
+    )
 
 
 if __name__ == "__main__":
