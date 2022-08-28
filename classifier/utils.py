@@ -33,6 +33,8 @@ __all__ = (
     "get_dcm_file_paths",
     "get_image_paths_and_labels",
     "show_images",
+    "save_config",
+    "show_np_array"
 )
 
 
@@ -59,6 +61,17 @@ def visualise_training_results(
         plt.show()
     plt.savefig(os.path.join(run_folder, "plot.png"))
     logger.info(f"Training graph saved to {run_folder}")
+
+
+def save_config(
+    config: object, run_folder: str, filename: str = "config.txt"
+) -> None:
+    filepath = os.path.join(run_folder, filename)
+    with open(filepath, "w") as file:
+        for attr_name, value in config.__dict__.items():
+            if not attr_name.startswith("__"):
+                file.write(f"{attr_name}: {value}\n")
+    logger.info(f"Config saved to {run_folder}")
 
 
 def save_validation_image_paths(
@@ -190,6 +203,11 @@ def read_annotations(path: str) -> t.Iterator[list[str]]:
         if header:
             for row in csv_reader:
                 yield row
+
+
+def show_np_array(image: np.ndarray, window_name: str = "") -> None:
+    cv2.imshow(window_name, image)
+    cv2.waitKey(0)
 
 
 def show_dicom_file(image: pydicom.dataset.FileDataset) -> None:
@@ -373,3 +391,5 @@ if __name__ == "__main__":
     # print("Done")
 
     print(get_training_device())
+
+    # save_config(Config)

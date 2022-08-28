@@ -17,6 +17,7 @@ from classifier.utils import (
     visualise_training_results,
     create_new_run_folder,
     save_validation_image_paths,
+    save_config
 )
 from classifier.logger import get_logger
 from classifier.config import Config
@@ -32,6 +33,7 @@ def main():
     logger.info(
         f"New run folder created. Results could be found in {run_folder_path}"
     )
+    save_config(Config, run_folder_path)
 
     image_paths, labels = get_image_paths_and_labels()
     logger.info(f"Got {len(image_paths)} images and {len(labels)} labels")
