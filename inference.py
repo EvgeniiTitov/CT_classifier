@@ -18,8 +18,7 @@ python inference.py
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_weights", type=str, required=True)
-    parser.add_argument("--image_path", type=str)
-    parser.add_argument("--folder_path", type=str)
+    parser.add_argument("--image_path", type=str, required=True)
     return parser.parse_args()
 
 
