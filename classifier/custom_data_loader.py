@@ -5,15 +5,11 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from torchvision.transforms.functional import to_pil_image
 
-from classifier.logger import get_logger
 from classifier.exceptions import NumberOfImagesDoesntMatchLabelsError
 from classifier.utils import open_dcm_file
 
 
 __all__ = ["BrainScanDataset"]
-
-
-logger = get_logger("custom_data_loader")
 
 
 class BrainScanDataset(Dataset):

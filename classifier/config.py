@@ -22,4 +22,4 @@ class Config:
     SCHEDULER = True
     SCHEDULER_STEP = 5
     SCHEDULER_GAMMA = 0.1
-    EPOCHS = 5
+    EPOCHS = 1

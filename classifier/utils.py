@@ -30,6 +30,7 @@ __all__ = (
     "show_dicom_file",
     "get_dcm_file_paths",
     "get_image_paths_and_labels",
+    "show_images",
 )
 
 
@@ -152,7 +153,8 @@ def show_tensor(tensor: torch.Tensor) -> None:
 def open_dcm_file(filepath: str) -> np.ndarray:
     image_file = pydicom.dcmread(filepath)
     # show_dicom_file(image_file)
-    image_arr = np.array(image_file.pixel_array, dtype=np.float32)
+    image_arr = np.array(image_file.pixel_array, dtype=np.uint8)
+    image_arr = np.repeat(image_arr[..., np.newaxis], 3, axis=2)
     return image_arr
 
 
@@ -296,6 +298,20 @@ def get_image_paths_and_labels() -> tuple[list[str], list[int]]:
     return image_paths, labels
 
 
+def show_images(
+    images: list[np.ndarray],
+    window_name: str = "",
+    horizontal: bool = True,
+) -> None:
+    try:
+        arr = np.concatenate(images, axis=1 if horizontal else 0)
+    except Exception as e:
+        logger.error("Failed while concatenating images into a single array")
+        raise e
+    cv2.imshow(window_name, arr)
+    cv2.waitKey(0)
+
+
 if __name__ == "__main__":
     # separate_annotations_into_two_classes(
     #     filepath="../data/training/annotations.csv",
@@ -321,4 +337,15 @@ if __name__ == "__main__":
     # image = open_dcm_file("../data/training/CID_0081375920/ID_1938ae4a7.dcm")
     # print(image.shape)
 
-    print(_create_new_run_folder())
+    # print(_create_new_run_folder())
+
+    image = open_dcm_file("../data/training/CID_0081375920/ID_1938ae4a7.dcm")
+    print(image.shape)
+
+    cv2.imshow("", image)
+    cv2.waitKey(0)
+
+    from torchvision.transforms.functional import to_pil_image
+
+    pil_image = to_pil_image(image)
+    print("Done")

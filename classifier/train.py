@@ -132,10 +132,11 @@ def main():
     best_val_accuracy = 0
     best_acc_epoch = 0
     best_model_weights = copy.deepcopy(model.state_dict())
+
     for epoch in range(1, Config.EPOCHS + 1):
         logger.info(f"Epoch {epoch} / {Config.EPOCHS}")
-        for phase in ["train", "valid"]:
 
+        for phase in ["train", "valid"]:
             if phase == "train":
                 model.train()
             else:
@@ -147,7 +148,6 @@ def main():
                 batch = batch.to(device)
                 labels = labels.to(device)
                 optimizer.zero_grad()
-
                 with torch.set_grad_enabled(phase == "train"):
                     activations = model(batch)
                     loss = loss_function(activations, labels)
@@ -179,8 +179,8 @@ def main():
                 best_acc_epoch = epoch
 
     logger.info(
-        f"Training complete. Best accuracy {best_val_accuracy} achieved on "
-        f"the epoch {best_acc_epoch}"
+        f"Training complete. Best accuracy {best_val_accuracy:.4f} achieved on"
+        f" the epoch {best_acc_epoch}"
     )
 
     model.load_state_dict(best_model_weights)
